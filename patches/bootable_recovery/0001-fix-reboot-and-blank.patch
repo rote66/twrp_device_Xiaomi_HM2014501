@@ -1,14 +1,13 @@
-From 61296f6ccbcd9febad656c501e241bfa2d8e0903 Mon Sep 17 00:00:00 2001
+From 88aa3ffc69430692a879cc766f9bd885102c03c0 Mon Sep 17 00:00:00 2001
 From: rote66 <pontifex23872388@gmail.com>
-Date: Wed, 21 Feb 2018 16:22:11 +0800
+Date: Wed, 21 Feb 2018 17:31:50 +0800
 Subject: [PATCH] fix reboot and blank
 
-Signed-off-by: rote66 <pontifex23872388@gmail.com>
 ---
  minuitwrp/Android.mk |  3 +++
- twrp-functions.cpp   | 34 ++++++++++++++++++++--------------
+ twrp-functions.cpp   | 36 ++++++++++++++++++++----------------
  twrp.cpp             |  5 +++++
- 3 files changed, 28 insertions(+), 14 deletions(-)
+ 3 files changed, 28 insertions(+), 16 deletions(-)
 
 diff --git a/minuitwrp/Android.mk b/minuitwrp/Android.mk
 index 09bdb8d..adfb8fa 100644
@@ -25,7 +24,7 @@ index 09bdb8d..adfb8fa 100644
      LOCAL_CFLAGS += -DTW_FBIOPAN
  endif
 diff --git a/twrp-functions.cpp b/twrp-functions.cpp
-index b7bcebe..1b1aa45 100644
+index b7bcebe..007c126 100644
 --- a/twrp-functions.cpp
 +++ b/twrp-functions.cpp
 @@ -46,14 +46,17 @@
@@ -47,7 +46,7 @@ index b7bcebe..1b1aa45 100644
  extern "C" {
  	#include "libcrecovery/common.h"
  }
-@@ -582,46 +585,49 @@ int TWFunc::tw_reboot(RebootCommand command)
+@@ -582,46 +585,47 @@ int TWFunc::tw_reboot(RebootCommand command)
  	switch (command) {
  		case rb_current:
  		case rb_system:
@@ -87,13 +86,13 @@ index b7bcebe..1b1aa45 100644
  		case rb_poweroff:
  			check_and_run_script("/sbin/poweroff.sh", "power off");
 -#ifdef ANDROID_RB_PROPERTY
-+#ifdef ANDROID_RB_POWEROFF
- 			return property_set(ANDROID_RB_PROPERTY, "shutdown,");
- #elif defined(ANDROID_RB_POWEROFF)
+-			return property_set(ANDROID_RB_PROPERTY, "shutdown,");
+-#elif defined(ANDROID_RB_POWEROFF)
 -			return android_reboot(ANDROID_RB_POWEROFF, 0, 0);
 -#else
 -			return reboot(RB_POWER_OFF);
-+			android_reboot(ANDROID_RB_POWEROFF, 0, 0);
++#ifdef ANDROID_RB_POWEROFF
++			property_set(ANDROID_RB_PROPERTY, "shutdown,");
  #endif
 +			return reboot(RB_POWER_OFF);
 +
