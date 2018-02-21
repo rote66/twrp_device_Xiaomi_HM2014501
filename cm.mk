@@ -28,5 +28,5 @@ service.adb.root=1 \
 ro.sf.lcd_density=320 \
 ro.sys.usb.storage.type=mtp,adb \
 persist.sys.timezone=Asia/Shanghai \
-ro.xtreme.romer=wanyikai0791 \
-ro.xar.romer=wanyikai0791
+ro.xtreme.team.romer=wanyikai0791 \
+ro.xar.team.romer=wanyikai0791
